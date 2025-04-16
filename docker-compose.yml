@@ -1,0 +1,38 @@
+services:
+  mongo:
+    image: mongo:8
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  python:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    container_name: python-app
+    volumes:
+      - ./scripts:/app/scripts
+      - ./requirements.txt:/app/requirements.txt
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+    working_dir: /app/scripts
+
+  node:
+    build:
+      dockerfile: Dockerfile.node
+    image: node:20
+    container_name: node-app
+    working_dir: /app/scripts
+    volumes:
+      - ./scripts:/app/scripts
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017
+
+volumes:
+  mongo_data:

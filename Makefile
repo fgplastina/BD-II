@@ -6,7 +6,7 @@ GIT_REVISION = `git rev-parse HEAD`
 
 # -------------------
 #
-.PHONY: build up down run flush recreate
+.PHONY: build up down run_python run_node flush recreate
 
 build:
 	docker compose build
@@ -17,7 +17,10 @@ up:
 down:
 	docker compose down
 
-run:
+mongosh:
+	docker compose run --rm -it mongo mongosh "mongodb://mongo:27017"
+
+run_python:
 	@clear
 	@echo "Running script: $(script)"
 	docker compose run --rm -it python python $(script)

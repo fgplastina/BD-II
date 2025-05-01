@@ -19,25 +19,26 @@ const User = mongoose.model("User", userSchema);
 
 async function showUsers() {
   try {
-    console.log("Connecting to MongoDB...");
+    console.log("🔌 Connecting to MongoDB...");
     await mongoose.connect(MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Connected!");
+    console.log("✅ Connected!");
 
     const users = await User.find();
 
-    console.log(`Found ${users.length} users:`);
+    console.log(`👥 Found ${users.length} users:`);
     users.forEach((user) => {
       console.log(`- ${user.name} (${user.email})`);
     });
   } catch (err) {
-    console.error("Error:", err.message);
+    console.error("❌ Error:", err.message);
   } finally {
     await mongoose.disconnect();
-    console.log("Disconnected from MongoDB.");
+    console.log("🔌 Disconnected from MongoDB.");
   }
 }
 
 showUsers();
+
